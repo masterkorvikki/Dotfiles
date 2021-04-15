@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: function
+# key: fun
+# --
+\\(${1:f}: ${2:\Re} \longrightarrow ${3:\Re}\\) $0

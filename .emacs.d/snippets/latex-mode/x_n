@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: x_n
+# key: xnn
+# --
+x_{n}

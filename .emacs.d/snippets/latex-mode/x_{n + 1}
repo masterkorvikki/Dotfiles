@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: x_{n + 1}
+# key: xp1
+# --
+x_{n + 1}

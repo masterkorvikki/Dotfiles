@@ -1,0 +1,7 @@
+# key: bigfun
+# name: big function
+# --
+\begin{align*}
+        ${1:f}: ${2:\Re} \longrightarrow ${3:\Re} \\\
+        ${4:x} \longmapsto $1($4) = $0
+\end{align*}

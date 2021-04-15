@@ -1,0 +1,4 @@
+# key: part
+# name: partial
+# --
+\frac{\partial $1}{\partial $2} $0

@@ -1,0 +1,4 @@
+# key: cvec
+# name: column vector
+# --
+\begin{pmatrix} ${1:x}_{${2:1}} \\\\ \vdots \\\\ $1_{${3:n}} \end{pmatrix} $0

@@ -1,0 +1,16 @@
+# key: basic
+# name: Basic Preamble
+# --
+\documentclass[letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+$0
+\end{document}
