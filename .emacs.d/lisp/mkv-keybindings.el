@@ -40,6 +40,10 @@
 (global-set-key (kbd "s-S") 'write-file)
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 
+;; making dired a little nicer
+(define-key dired-mode-map (kbd "<left>") 'dired-up-directory)
+(define-key dired-mode-map (kbd "<right>") 'dired-find-file)
+
 ;; Go to other windows easily with one keystroke =s-something=
 (defun vsplit-last-buffer ()
   "Split the last buffer in half vertically."

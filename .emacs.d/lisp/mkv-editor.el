@@ -7,12 +7,6 @@
 ;;; newline at the end of file
 (setq require-final-newline t)
 
-;;; store backup and autosave files in tmp directory
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
 ;;; enable all the cool commands
 (put 'narrow-to-region 'disabled nil)
 (put 'narrow-to-page 'disabled nil)

@@ -7,3 +7,6 @@
 .emacs.d/recentf
 .emacs.d/recentf.elc
 .emacs.d/.last-package-update-day
+/.emacs.d/*.log
+/.emacs.d/notes.org
+/.emacs.d/url/

@@ -30,7 +30,7 @@
 
 (use-package avy
   :bind
-  (("C-:" . avy-goto-char)
+  (("C-;" . avy-goto-char)
    ("C-'" . avy-goto-char-timer)
    ("M-g g" . avy-goto-line)
    ("M-g w" . avy-goto-word-1))
@@ -56,9 +56,17 @@
   :config (company-auctex-init)
   :hook ((TeX-mode LaTeX-mode) . company-mode))
 
+(use-package counsel
+  :config (ivy-mode 1)
+  :bind (("s-f" . swiper-isearch)
+	 ("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file)
+	 ("C-x b" . ivy-switch-buffer)
+	 ("C-c o" . counsel-outline)))
+
 (use-package diff-hl
-  :config (global-diff-hl-mode)
-  :defer t)
+  :bind (("C-c C-M-s" . diff-hl-show-hunk))
+  :config (global-diff-hl-mode))
 
 (use-package diminish
   :defer t)
@@ -77,36 +85,29 @@
   :defer t
   :config
   (define-key flyspell-mode-map (kbd "C-.") nil)
+  (define-key flyspell-mode-map (kbd "C-;") nil)
+  (define-key flyspell-mode-map (kbd "C-:") 'flyspell-auto-correct-previous-word)
   (setq ispell-program-name "aspell"
 	ispell-extra-args '("--sug-mode=ultra"))
   :ensure nil)
 
 (use-package helm
   :bind (;; helm alternatives to standard commands
-	 ("C-x C-f" . helm-find-files)
-	 ("C-x d" . helm-find-files)
-	 ("C-x b" . helm-mini)
-	 ("C-x C-b" . helm-buffers-list)
-	 ("C-x C-d" . helm-find-files)
-	 ("C-x f" . helm-for-files)
-	 ("M-x" . helm-M-x)
-	 ("M-y" . helm-show-kill-ring)
+         ("C-x C-b" . helm-buffers-list)
+         ("C-x f" . helm-for-files)
+         ("M-y" . helm-show-kill-ring)
 
 	 ;; project based keybindings
 	 ("M-p" . helm-browse-project)
          ("C-x r h" . helm-register)
 
 	 ;; most interesting helm menus are under one prefix
-	 ("C-c h h" . helm-mini)
-	 ("C-c h i" . helm-info)
-	 ("C-c h m" . helm-man-woman)
+         ("C-c h m" . helm-man-woman)
 	 ("C-c h a" . helm-apropos)
 	 ("C-c h l" . helm-locate)
 	 ("C-c h i" . helm-imenu)
 	 ("C-c h t" . helm-top)
 	 ("C-c h r" . helm-recentf)
-	 ("C-c h w" . helm-google-suggest)
-         ("C-c h o" . helm-occur)
          
 	 ;; helm internal commands
 	 (:map helm-map
@@ -146,23 +147,14 @@
   :ensure nil)
 
 (use-package helm-grep
+  :bind ("C-c h g" . helm-do-grep-ag)
   :ensure nil)
 
 (use-package helm-descbinds
   :config (helm-descbinds-mode))
 
-(use-package helm-projectile
-  :config (helm-projectile-on))
-
-(use-package swiper-helm
-  :bind ("s-f" . swiper-helm))
-
 (use-package hl-todo
-  :config (global-hl-todo-mode)
-  :defer t)
-
-(use-package imenu-anywhere
-  :bind (("C-c i" . imenu-anywhere)))
+  :config (global-hl-todo-mode))
 
 (use-package latex-preview-pane
   :defer t)
@@ -179,12 +171,6 @@
 (use-package mkv-org-mode
   :ensure nil)
 
-(use-package operate-on-number
-  :defer t)
-
-(use-package projectile
-  :defer t)
-
 (use-package rainbow-delimiters
   :defer t
   :init
@@ -199,32 +185,16 @@
     (add-hook 'prog-mode-hook 'rainbow-mode)))
 
 (use-package smartparens
+  :bind (( "s-<right>" . sp-forward-slurp-sexp)
+	 ("s-<left>" . sp-forward-barf-sexp))
   :config
   (require 'smartparens-config)
   (require 'smartparens-latex)
-  (setq sp-base-key-bindings 'paredit)
-  (sp-use-paredit-bindings)
   :diminish smartparens-mode
   :hook
   (text-mode . smartparens-mode))
 
 (use-package solarized-theme)
-
-(use-package smartrep
-  :config
-  (smartrep-define-key global-map "C-c ."
-    '(("+" . apply-operation-to-number-at-point)
-      ("-" . apply-operation-to-number-at-point)
-      ("*" . apply-operation-to-number-at-point)
-      ("/" . apply-operation-to-number-at-point)
-      ("\\" . apply-operation-to-number-at-point)
-      ("^" . apply-operation-to-number-at-point)
-      ("<" . apply-operation-to-number-at-point)
-      (">" . apply-operation-to-number-at-point)
-      ("#" . apply-operation-to-number-at-point)
-      ("%" . apply-operation-to-number-at-point)
-      ("'" . operate-on-number-at-point)))
-  :defer t)
 
 (use-package spaceline
    :config
@@ -258,9 +228,6 @@
 
 (use-package yasnippet-snippets
   :defer t)
-
-(use-package zop-to-char
-  :bind ([remap zap-to-char] . zop-to-char))
 
 (provide 'mkv-core)
 
