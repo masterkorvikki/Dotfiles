@@ -205,9 +205,9 @@ _color_my_directories() {
 	dcolor="\[\033[38;5;196m\]$(basename $(pwd))\[\033[0m\]"
     elif [[ $(pwd) =~ 'Philosophy' ]]; then
 	dcolor="\[\033[38;5;20m\]$(basename $(pwd))\[\033[0m\]"
-    elif [[ $(pwd) =~ 'Dotfiles' ]]; then
+    elif [[ $(pwd) =~ '.dotfiles' ]]; then
 	dcolor="\[\e[35m\]$(basename $(pwd))\[\033[0m\]" 
-    elif [[ $(basename $(pwd)) =~ 'alice' ]]; then
+    elif [[ $(pwd) = $HOME ]]; then
  	dcolor="\[\e[1;36m\]~\[\e[m\]"
     fi
     echo $dcolor

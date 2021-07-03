@@ -58,6 +58,7 @@
 
 (use-package counsel
   :config (ivy-mode 1)
+  :diminish ivy-mode
   :bind (("s-f" . swiper-isearch)
 	 ("M-x" . counsel-M-x)
 	 ("C-x C-f" . counsel-find-file)
@@ -96,6 +97,7 @@
          ("C-x C-b" . helm-buffers-list)
          ("C-x f" . helm-for-files)
          ("M-y" . helm-show-kill-ring)
+	 ("s-x" . helm-M-x)
 
 	 ;; project based keybindings
 	 ("M-p" . helm-browse-project)

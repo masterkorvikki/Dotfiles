@@ -27,7 +27,7 @@ if command -v exa &> /dev/null; then
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]] &&  command -v gls &> /dev/null; then
-    alias ls='gls'
+    alias ls='gls --color=always'
 fi
     
 
@@ -49,7 +49,7 @@ alias eclass='cd ~/Classes/English\ Classes'
 alias mhw='cd ~/Classes/Math\ Classes/Homework'
 alias ewh='cd ~/Classes/English\ Classes/Homework'
 alias writing='cd ~/Writing\ Projects/'
-alias dfiles='cd ~/Dotfiles/'
+alias dfiles='cd ~/.dotfiles/'
 
 # Git commands
 
