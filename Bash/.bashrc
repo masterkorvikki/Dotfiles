@@ -2,61 +2,7 @@
 ## Aliases ##
 #############
 
-# Generally useful ones
-
-alias q='exit'
-alias c='clear'
-alias h='history'
-alias cs='clear;ls'
-alias p='cat'
-alias pd='pwd'
-alias l='exa -al --color=always --group-directories-first'
-alias lt='exa -aT --color=always --group-directories-first'
-alias t='time'
-alias k='kill'
-alias null='/dev/null'
-alias e='emacsclient -c'
-alias ..='cd ..'
-alias ...='cd ..; cd ..'
-alias ....='cd ..; cd ..; cd ..'
-alias python='python3'
-alias pip='pip3'
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-
-# Shortcuts to .emacs.d and .bashrc
-
-alias emacsd='emacsclient -c ~/.emacs.d/'
-alias bashrc='emacsclient -c ~/.bashrc'
-alias loadbash='source ~/.bashrc'
-
-# Common directories
-
-alias home='cd ~'
-alias root='cd /'
-alias dtop='cd ~/Desktop'
-alias down='cd ~/Downloads'
-
-# Various project directories
-
-alias mclass='cd ~/Classes/Math\ Classes'
-alias eclass='cd ~/Classes/English\ Classes'
-alias mhw='cd ~/Classes/Math\ Classes/Homework'
-alias ewh='cd ~/Classes/English\ Classes/Homework'
-alias writing='cd ~/Writing\ Projects/'
-alias dfiles='cd ~/Dotfiles/'
-
-# Git commands
-
-alias g='git'
-alias st='git status'
-alias com='git commit -m'
-alias clone='git clone'
-alias sth='git stash'
-alias lg='git log'
-alias u='git add -u'
-alias all='git add .'
+source ~/.bash_aliases
 
 #############
 ## Exports ##
@@ -67,19 +13,19 @@ alias all='git add .'
 export GREP_OPTIONS=' —color=auto'
 
 # Set emacs as my default editor
-
-alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-alias daemon="/Applications/Emacs.app/Contents/MacOS/Emacs --daemon"
-export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+if [[ "$OSYTYPE" == "darwin"* ]]; then
+    alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+    alias daemon="/Applications/Emacs.app/Contents/MacOS/Emacs --daemon"
+    export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+else
+    alias daemon="emacs --daemon"
+    export EDITOR="emacs"
+fi
 
 # getting proper colors 
 
 export TERM="xterm-256color"
-
-# Ignoring commonly used commands in history
-
-export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 
 ###############
 ## Functions ##
@@ -112,6 +58,13 @@ manp() {
     man -t "${1}" | open -f -a Skim
 }
 
+# Make a directory and cd into it
+
+mkcd ()
+{
+  mkdir -p -- "$1" && cd -P -- "$1"
+}
+
 ##############
 ## Niceties ##
 ##############
@@ -122,13 +75,17 @@ set show-all-if-ambiguous on
 set completion-ignore-case on
 set menu-complete-display-prefix on
 set colored-completion-prefix on
-bind '\C-i:menu-complete'
-bind '"\e[Z":menu-complete-backward'
-
-# Cycle through history based on characters already typed on the line
-
-bind '"\er":history-search-backward'
-bind '"\es":history-search-forward'
+if [ -z $INSIDE_EMACS ]
+   then
+   bind '\C-i:menu-complete'
+   bind '"\e[Z":menu-complete-backward'
+   bind '\C-j:complete'
+   
+   # Cycle through history based on characters already typed on the line
+   
+   bind '"\er":history-search-backward'
+   bind '"\es":history-search-forward'
+fi
 
 # Disable START/STOP characters
 
@@ -142,7 +99,9 @@ HISTFILESIZE=1000000
 # Making pyenv do the work of giving me the right Python version
 
 if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
 fi
 
 # Shopt options
@@ -234,8 +193,31 @@ _show_last_exit_status() {
     fi
 }
 
+_color_my_directories() {
+    # Color directories according to my personal preferences
+    local dcolor
+    dcolor="$(basename $(pwd))"
+    if [[ $(pwd) =~ 'Math' ]]; then
+	dcolor="\[\e[1;31m\]$(basename $(pwd))\[\e[m\]"
+    elif [[ $(pwd) =~ 'English' ]]; then
+	dcolor="\[\e[0;34m\]$(basename $(pwd))\[\e[m\]"
+    elif [[ $(pwd) =~ 'Class' ]]; then
+	dcolor="\[\e[33m\]$(basename $(pwd))\[\e[m\]"
+    elif [[ $(pwd) =~ 'Anarchis' ||
+		$(pwd) =~ 'Communis' ]] ; then
+	dcolor="\[\033[38;5;196m\]$(basename $(pwd))\[\033[0m\]"
+    elif [[ $(pwd) =~ 'Philosophy' ]]; then
+	dcolor="\[\033[38;5;20m\]$(basename $(pwd))\[\033[0m\]"
+    elif [[ $(pwd) =~ '.dotfiles' ]]; then
+	dcolor="\[\e[35m\]$(basename $(pwd))\[\033[0m\]" 
+    elif [[ $(pwd) = $HOME ]]; then
+ 	dcolor="\[\e[1;36m\]~\[\e[m\]"
+    fi
+    echo $dcolor
+}
+
 _build_prompt() {
-    local git_status username
+    local git_status username colored_dir
     git_status=$(_show_git_status)
     if [[ -n "$git_status" ]]; then
 	git_status=":${git_status}"
@@ -248,7 +230,8 @@ _build_prompt() {
     else
 	username="$(whoami)"
     fi
-    PS1="${username}\[\e[36m\][\[\e[m\]\W${git_status}\[\e[36m\]]\[\e[m\]\\\$ "
+    colored_dir=$(_color_my_directories)
+    PS1="${username}\[\e[36m\][\[\e[m\]${colored_dir}${git_status}\[\e[36m\]]\[\e[m\]\\\$ "
   return 0
 }
 

@@ -10,6 +10,16 @@
 	       (setq gc-cons-threshold 800000)
                (let ((garbage-collection-messages t)) (garbage-collect))))
 
+;;; temporarily disable the file name handler.
+(setq default-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(defun mkv-reset-file-name-handler-alist ()
+  (setq file-name-handler-alist
+        (append default-file-name-handler-alist
+                file-name-handler-alist))
+  (cl-delete-duplicates file-name-handler-alist :test 'equal))
+(add-hook 'after-init-hook 'mkv-reset-file-name-handler-alist)
+
 ;;; confirm quit emacs
 (setq confirm-kill-emacs 'y-or-n-p)
 
@@ -29,8 +39,8 @@
 (setq package-enable-at-startup nil)
 
 (package-initialize)
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 ;;; make sure use-package is installed
 (unless (package-installed-p 'use-package)
