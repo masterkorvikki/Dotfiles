@@ -14,8 +14,8 @@ export GREP_OPTIONS=' —color=auto'
 
 # Set emacs as my default editor
 if [[ "$OSYTYPE" == "darwin"* ]]; then
-    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
     alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
     alias daemon="/Applications/Emacs.app/Contents/MacOS/Emacs --daemon"
     export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
 else
@@ -75,14 +75,17 @@ set show-all-if-ambiguous on
 set completion-ignore-case on
 set menu-complete-display-prefix on
 set colored-completion-prefix on
-bind '\C-i:menu-complete'
-bind '"\e[Z":menu-complete-backward'
-bind '\C-j:complete'
-
-# Cycle through history based on characters already typed on the line
-
-bind '"\er":history-search-backward'
-bind '"\es":history-search-forward'
+if [ -z $INSIDE_EMACS ]
+   then
+   bind '\C-i:menu-complete'
+   bind '"\e[Z":menu-complete-backward'
+   bind '\C-j:complete'
+   
+   # Cycle through history based on characters already typed on the line
+   
+   bind '"\er":history-search-backward'
+   bind '"\es":history-search-forward'
+fi
 
 # Disable START/STOP characters
 

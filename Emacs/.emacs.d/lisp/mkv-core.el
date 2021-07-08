@@ -173,6 +173,15 @@
 (use-package mkv-org-mode
   :ensure nil)
 
+(use-package mkv-pdf
+  :ensure nil)
+
+(use-package mkv-shell
+  :ensure nil)
+
+;; pdf-tools has been installed, I am prepared to fight someone
+(pdf-loader-install)
+
 (use-package rainbow-delimiters
   :defer t
   :init
@@ -185,6 +194,9 @@
   :init
   (progn
     (add-hook 'prog-mode-hook 'rainbow-mode)))
+
+(use-package shx
+  :config (shx-global-mode 1))
 
 (use-package smartparens
   :bind (( "s-<right>" . sp-forward-slurp-sexp)

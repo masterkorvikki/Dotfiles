@@ -10,3 +10,6 @@ Emacs/.emacs.d/.last-package-update-day
 Emacs/.emacs.d/*.log
 Emacs/.emacs.d/notes.org
 Emacs/.emacs.d/url/
+/Emacs/.emacs.d/.cask/
+/Emacs/.emacs.d/tramp
+/Emacs/.emacs.d/.emacs-custom.*
