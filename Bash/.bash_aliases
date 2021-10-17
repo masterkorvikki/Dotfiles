@@ -22,8 +22,11 @@ alias rm='rm -i'
 
 # System-specific ls shenanigans
 if command -v exa &> /dev/null; then
-    alias l='exa -al --color=always --group-directories-first'
-    alias lt='exa -aT --color=always --group-directories-first'
+    alias l='exa -alGF --color=always --git --group-directories-first --header --icons'
+    alias ll='exa -aF --color=always --group-directories-first --icons'
+    alias lt='exa -aTG --color=always --group-directories-first --icons'
+    alias l2='exa -aGTL 2 --color=always --group-directories-first --icons'
+    alias l3='exa -aGTL 3 --color=always --group-directories-first --icons'
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]] &&  command -v gls &> /dev/null; then

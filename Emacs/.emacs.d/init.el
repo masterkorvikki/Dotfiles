@@ -19,6 +19,7 @@
 (global-linum-mode 1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+
 (winner-mode +1)
 (setq frame-title-format " %b ")
 (setq inhibit-startup-message t)
@@ -31,6 +32,9 @@
       scroll-preserve-screen-position 1)
 
 (load-theme 'solarized-dark t)
+(setq custom-safe-themes t)
+
+(setq default-directory "/Users/alicesmith/")
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (use-package mkv-core

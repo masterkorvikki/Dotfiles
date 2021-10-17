@@ -30,10 +30,7 @@
 
 (use-package avy
   :bind
-  (("C-;" . avy-goto-char)
-   ("C-'" . avy-goto-char-timer)
-   ("M-g g" . avy-goto-line)
-   ("M-g w" . avy-goto-word-1))
+  (("M-g g" . avy-goto-line))
   :config (define-key isearch-mode-map (kbd "C-'") 'avy-isearch))
 
 (use-package browse-kill-ring
@@ -46,10 +43,11 @@
   :defer t)
 
 (use-package company
-  :config (setq company-global-modes t)
-  :diminish company-mode
-  :defer t
-  :hook (after-init-hook . global-company-mode))
+  :config
+  (setq company-global-modes t)
+  (global-company-mode)
+  :defer nil
+  :diminish company-mode)
 
 (use-package company-auctex
   :after (company)
@@ -57,12 +55,11 @@
   :hook ((TeX-mode LaTeX-mode) . company-mode))
 
 (use-package counsel
-  :config (ivy-mode 1)
+  :config
+  (ivy-mode 1)
   :diminish ivy-mode
   :bind (("s-f" . swiper-isearch)
-	 ("M-x" . counsel-M-x)
-	 ("C-x C-f" . counsel-find-file)
-	 ("C-x b" . ivy-switch-buffer)
+	 ("C-x b". ivy-switch-buffer)
 	 ("C-c o" . counsel-outline)))
 
 (use-package diff-hl
@@ -79,15 +76,14 @@
   :bind (("C-h C-m" . discover-my-major)))
 
 (use-package flycheck
-  :defer t
-  :init (global-flycheck-mode))
+  :config (global-flycheck-mode))
 
 (use-package flyspell
   :defer t
   :config
   (define-key flyspell-mode-map (kbd "C-.") nil)
   (define-key flyspell-mode-map (kbd "C-;") nil)
-  (define-key flyspell-mode-map (kbd "C-:") 'flyspell-auto-correct-previous-word)
+  (define-key flyspell-mode-map (kbd "C-,") nil)
   (setq ispell-program-name "aspell"
 	ispell-extra-args '("--sug-mode=ultra"))
   :ensure nil)
@@ -95,22 +91,15 @@
 (use-package helm
   :bind (;; helm alternatives to standard commands
          ("C-x C-b" . helm-buffers-list)
+	 ("C-x C-f" . helm-find-files)
          ("C-x f" . helm-for-files)
          ("M-y" . helm-show-kill-ring)
-	 ("s-x" . helm-M-x)
+	 ("M-x" . helm-M-x)
 
 	 ;; project based keybindings
 	 ("M-p" . helm-browse-project)
          ("C-x r h" . helm-register)
-
-	 ;; most interesting helm menus are under one prefix
-         ("C-c h m" . helm-man-woman)
-	 ("C-c h a" . helm-apropos)
-	 ("C-c h l" . helm-locate)
-	 ("C-c h i" . helm-imenu)
-	 ("C-c h t" . helm-top)
-	 ("C-c h r" . helm-recentf)
-         
+	 
 	 ;; helm internal commands
 	 (:map helm-map
 	       ("TAB" . helm-execute-persistent-action)
@@ -124,7 +113,7 @@
   :config
   (helm-autoresize-mode 1)
   (setq history-length 100)
-  (setq history-delete-duplicates t)
+  (setq hpistory-delete-duplicates t)
   (setq helm-ff-keep-cached-candidates "local")
   (setq helm-ff-refresh-cache-delay 300)
   (setq helm-ff-cache-mode-max-idle-time 300)
@@ -138,7 +127,6 @@
 
 (use-package helm-company
   :after (helm company)
-  :bind (("C-c C-," . helm-company))
   :commands (helm-company)
   :init
   (define-key company-mode-map (kbd "C-,") 'helm-company)
@@ -149,7 +137,6 @@
   :ensure nil)
 
 (use-package helm-grep
-  :bind ("C-c h g" . helm-do-grep-ag)
   :ensure nil)
 
 (use-package helm-descbinds
@@ -158,11 +145,18 @@
 (use-package hl-todo
   :config (global-hl-todo-mode))
 
+(use-package hydra
+  :defer t)
+
+(use-package hyperbole
+  :defer t)
+
 (use-package latex-preview-pane
   :defer t)
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :defer t)
 
 (use-package mkv-elisp
   :ensure nil)
@@ -178,6 +172,10 @@
 
 (use-package mkv-shell
   :ensure nil)
+
+(use-package nov
+  :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  :defer t)
 
 ;; pdf-tools has been installed, I am prepared to fight someone
 (pdf-loader-install)
@@ -238,11 +236,51 @@
   :init
   (which-key-mode))
 
+(use-package xscheme)
+
 (use-package yasnippet)
 
 (use-package yasnippet-snippets
   :defer t)
 
-(provide 'mkv-core)
+;; Clarifying my selected packages while I'm here
+(setq package-selected-packages
+      '(org-plus-contrib
+	hyperbole
+	pdf-tools
+	ob-scheme
+	yasnippet-snippets
+	which-key
+	undo-tree
+	super-save
+	rainbow-mode
+	rainbow-delimiters
+	shx
+	spaceline
+	magit
+	latex-preview-pane
+	helm-company
+	discover-my-major
+	diminish
+	diff-hl
+	company-auctex
+	company
+	browse-kill-ring
+	ace-window
+	helm-flycheck
+	helm-descbinds
+	hl-todo
+	helm
+	flycheck
+	anzu
+	auto-package-update
+	exec-path-from-shell
+	smartparens
+	cdlatex
+	auctex
+	solarized-theme
+	use-package))
+
+(provide'mkv-core)
 
 ;;; mkv-core.el ends here

@@ -10,14 +10,14 @@ source ~/.bash_aliases
 
 # Adding colors to grep
 
-export GREP_OPTIONS=' —color=auto'
+export GREP_OPTIONS='-—color=auto'
 
 # Set emacs as my default editor
-if [[ "$OSYTYPE" == "darwin"* ]]; then
+if [[ $(uname) == "Darwin" ]]; then
     alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs $@ "
     alias daemon="/Applications/Emacs.app/Contents/MacOS/Emacs --daemon"
-    export EDITOR="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+    export EDITOR="/Applications/Emacs.app/Contents/MacOS/Emacs"
 else
     alias daemon="emacs --daemon"
     export EDITOR="emacs"
@@ -196,20 +196,20 @@ _show_last_exit_status() {
 _color_my_directories() {
     # Color directories according to my personal preferences
     local dcolor
-    dcolor="$(basename $(pwd))"
+    dcolor="$(basename "$(pwd)")"
     if [[ $(pwd) =~ 'Math' ]]; then
-	dcolor="\[\e[1;31m\]$(basename $(pwd))\[\e[m\]"
+	dcolor="\[\e[1;31m\]$(basename "$(pwd)")\[\e[m\]"
     elif [[ $(pwd) =~ 'English' ]]; then
-	dcolor="\[\e[0;34m\]$(basename $(pwd))\[\e[m\]"
+	dcolor="\[\e[0;34m\]$(basename "$(pwd)")\[\e[m\]"
     elif [[ $(pwd) =~ 'Class' ]]; then
-	dcolor="\[\e[33m\]$(basename $(pwd))\[\e[m\]"
+	dcolor="\[\e[33m\]$(basename "$(pwd)")\[\e[m\]"
     elif [[ $(pwd) =~ 'Anarchis' ||
 		$(pwd) =~ 'Communis' ]] ; then
-	dcolor="\[\033[38;5;196m\]$(basename $(pwd))\[\033[0m\]"
+	dcolor="\[\033[38;5;196m\]$(basename "$(pwd)")\[\033[0m\]"
     elif [[ $(pwd) =~ 'Philosophy' ]]; then
-	dcolor="\[\033[38;5;20m\]$(basename $(pwd))\[\033[0m\]"
+	dcolor="\[\033[38;5;20m\]$(basename "$(pwd)")\[\033[0m\]"
     elif [[ $(pwd) =~ '.dotfiles' ]]; then
-	dcolor="\[\e[35m\]$(basename $(pwd))\[\033[0m\]" 
+	dcolor="\[\e[35m\]$(basename "$(pwd)")\[\033[0m\]" 
     elif [[ $(pwd) = $HOME ]]; then
  	dcolor="\[\e[1;36m\]~\[\e[m\]"
     fi

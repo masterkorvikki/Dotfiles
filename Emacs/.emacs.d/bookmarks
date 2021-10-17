@@ -2,19 +2,24 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-capture-last-stored-marker"
- (filename . "~/gtd/inbox.org")
- (front-context-string . "** TODO [#A] Cal")
- (rear-context-string . "nti-depressants\n")
- (position . 57))
+((".bashrc"
+ (filename . "~/Dotfiles/Bash/.bashrc")
+ (front-context-string . "\nif command -v p")
+ (rear-context-string . " Python version\n")
+ (position . 1883))
+("org-capture-last-stored-marker"
+ (filename . "~/gtd/gtd.org")
+ (front-context-string . "** TODO Get Beor")
+ (rear-context-string . "2021-08-24 Tue>\n")
+ (position . 20634))
 ("org-refile-last-stored"
- (filename . "~/gtd/inbox.org")
- (front-context-string . "** TODO [#A] Cal")
- (rear-context-string . "nti-depressants\n")
- (position . 57))
+ (filename . "~/gtd/gtd.org")
+ (front-context-string . "** TODO Create a")
+ (rear-context-string . "ssful:Adulting:\n")
+ (position . 24756))
 ("org-capture-last-stored"
  (filename . "~/gtd/inbox.org")
- (front-context-string . "** TODO [#A] Cal")
+ (front-context-string . "** TODO         ")
  (rear-context-string)
  (position . 9))
 )
