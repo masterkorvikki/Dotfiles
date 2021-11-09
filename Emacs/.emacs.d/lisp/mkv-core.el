@@ -13,28 +13,42 @@
   (auto-package-update-maybe))
 
 (use-package ace-window
-  :bind (("C-." . ace-window)
-	 ([remap other-window] . ace-window))
-  :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :bind
+  (("C-." . ace-window)
+   ([remap other-window] . ace-window))
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-dispatch-alist
+	'((?x aw-delete-window "Delete Window")
+	  (?m aw-swap-window "Swap Windows")
+	  (?M aw-move-window "Move Window")
+	  (?c aw-copy-window "Copy Window")
+	  (?i aw-switch-buffer-in-window "Select Buffer")
+	  (?n aw-flip-window)
+	  (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+	  (?c aw-split-window-fair "Split Fair Window")
+	  (?v aw-split-window-vert "Split Vert Window")
+	  (?b aw-split-window-horz "Split Horz Window")
+	  (?o delete-other-windows "Delete Other Windows")
+	  (?? aw-show-dispatch-help)))
   :diminish)
 
 (use-package anzu
-  :bind (("M-%" . anzu-query-replace)
-	 ("C-M-%" . anzu-query-replace-regexp))
+  :bind
+  (("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp))
   :diminish anzu-mode
-  :init
-  (global-anzu-mode t)
+  :config
   (setq query-replace-highlight t)
   (setq search-highlight t)
-  (setq anzu-cons-mode-line-p nil))
+  (setq anzu-cons-mode-line-p nil)
+  :hook
+  (after-init . global-anzu-mode))
 
 (use-package avy
-  :bind
-  (("M-g g" . avy-goto-line))
-  :config (define-key isearch-mode-map (kbd "C-'") 'avy-isearch))
-
-(use-package browse-kill-ring
-  :bind (("C-M-y" . browse-kill-ring)))
+  :config
+  (define-key isearch-mode-map (kbd "C-'") 'avy-isearch)
+  :defer t)
 
 (use-package cdlatex
   :config
@@ -45,35 +59,23 @@
 (use-package company
   :config
   (setq company-global-modes t)
-  (global-company-mode)
-  :defer nil
-  :diminish company-mode)
-
-(use-package company-auctex
-  :after (company)
-  :config (company-auctex-init)
-  :hook ((TeX-mode LaTeX-mode) . company-mode))
-
-(use-package counsel
-  :config
-  (ivy-mode 1)
-  :diminish ivy-mode
-  :bind (("s-f" . swiper-isearch)
-	 ("C-x b". ivy-switch-buffer)
-	 ("C-c o" . counsel-outline)))
+  (setq company-idle-delay 0.3)
+  (setq company-minimum-prefix-length 3)
+  :diminish company-mode
+  :hook
+  (after-init . global-company-mode))
 
 (use-package diff-hl
-  :bind (("C-c C-M-s" . diff-hl-show-hunk))
-  :config (global-diff-hl-mode))
+  :bind
+  (("C-c s" . diff-hl-show-hunk))
+  :hook
+  ((dired-mode . diff-hl-dired-mode)
+   (after-init . global-diff-hl-mode)))
 
-(use-package diminish
-  :defer t)
+(use-package diminish)
 
 (use-package dired-x
   :ensure nil)
-
-(use-package discover-my-major
-  :bind (("C-h C-m" . discover-my-major)))
 
 (use-package flycheck
   :config (global-flycheck-mode))
@@ -85,16 +87,18 @@
   (define-key flyspell-mode-map (kbd "C-;") nil)
   (define-key flyspell-mode-map (kbd "C-,") nil)
   (setq ispell-program-name "aspell"
-	ispell-extra-args '("--sug-mode=ultra"))
-  :ensure nil)
+	ispell-extra-args '("--sug-mode=ultra")))
 
 (use-package helm
   :bind (;; helm alternatives to standard commands
          ("C-x C-b" . helm-buffers-list)
 	 ("C-x C-f" . helm-find-files)
          ("C-x f" . helm-for-files)
-         ("M-y" . helm-show-kill-ring)
+         ("C-M-y" . helm-show-kill-ring)
 	 ("M-x" . helm-M-x)
+	 ("C-c o" . helm-imenu)
+	 ("s-f" . helm-occur)
+	 ("C-h g" . helm-descbinds)
 
 	 ;; project based keybindings
 	 ("M-p" . helm-browse-project)
@@ -113,17 +117,13 @@
   :config
   (helm-autoresize-mode 1)
   (setq history-length 100)
-  (setq hpistory-delete-duplicates t)
-  (setq helm-ff-keep-cached-candidates "local")
-  (setq helm-ff-refresh-cache-delay 300)
-  (setq helm-ff-cache-mode-max-idle-time 300)
+  (setq history-delete-duplicates t)
   (setq helm-candidate-number-limit 100)
   (setq helm-case-fold-search t)
   (setq helm-man-or-woman-function 'woman)
   (setq helm-split-window-inside-p t)
-  :diminish
-  :init
-  (helm-mode t))
+  (helm-mode t)
+  :diminish)
 
 (use-package helm-company
   :after (helm company)
@@ -148,15 +148,8 @@
 (use-package hydra
   :defer t)
 
-(use-package hyperbole
-  :defer t)
-
-(use-package latex-preview-pane
-  :defer t)
-
 (use-package magit
-  :bind ("C-x g" . magit-status)
-  :defer t)
+  :bind ("C-x g" . magit-status))
 
 (use-package mkv-elisp
   :ensure nil)
@@ -182,9 +175,8 @@
 
 (use-package rainbow-delimiters
   :defer t
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 (use-package rainbow-mode
   :defer t
@@ -197,11 +189,10 @@
   :config (shx-global-mode 1))
 
 (use-package smartparens
-  :bind (( "s-<right>" . sp-forward-slurp-sexp)
-	 ("s-<left>" . sp-forward-barf-sexp))
+  :bind (("C-S-f" . sp-forward-slurp-sexp)
+	 ("C-S-b" . sp-forward-barf-sexp))
   :config
   (require 'smartparens-config)
-  (require 'smartparens-latex)
   :diminish smartparens-mode
   :hook
   (text-mode . smartparens-mode))
@@ -209,9 +200,10 @@
 (use-package solarized-theme)
 
 (use-package spaceline
-   :config
-   (spaceline-emacs-theme)
-   (spaceline-toggle-buffer-encoding-abbrev-off))
+  :config
+  (spaceline-emacs-theme)
+  (spaceline-toggle-buffer-encoding-abbrev-off)
+  (spaceline-helm-mode))
 
 (use-package super-save
   :config (super-save-mode +1)
@@ -236,20 +228,16 @@
   :init
   (which-key-mode))
 
-(use-package xscheme)
-
-(use-package yasnippet)
+(use-package yasnippet
+  :hook
+  (text-mode . yas-minor-mode-on))
 
 (use-package yasnippet-snippets
   :defer t)
 
 ;; Clarifying my selected packages while I'm here
 (setq package-selected-packages
-      '(org-plus-contrib
-	hyperbole
-	pdf-tools
-	ob-scheme
-	yasnippet-snippets
+      '(yasnippet-snippets
 	which-key
 	undo-tree
 	super-save
@@ -258,8 +246,7 @@
 	shx
 	spaceline
 	magit
-	latex-preview-pane
-	helm-company
+        helm-company
 	discover-my-major
 	diminish
 	diff-hl
@@ -281,6 +268,6 @@
 	solarized-theme
 	use-package))
 
-(provide'mkv-core)
+(provide 'mkv-core)
 
 ;;; mkv-core.el ends here

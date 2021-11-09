@@ -20,9 +20,6 @@
   (cl-delete-duplicates file-name-handler-alist :test 'equal))
 (add-hook 'after-init-hook 'mkv-reset-file-name-handler-alist)
 
-;;; confirm quit emacs
-(setq confirm-kill-emacs 'y-or-n-p)
-
 ;;; set location for customization
 (setq custom-file "~/.emacs.d/.emacs-custom.el")
 (load custom-file)

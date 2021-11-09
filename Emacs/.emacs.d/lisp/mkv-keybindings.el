@@ -89,7 +89,7 @@ _J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
 (define-key helm-map (kbd "C-o") 'helm-like-unite/body)
 
 ;; Adding some of the more obscure helm stuff to a hydra
-(defhydra hydra-helm (global-map "C-c h" :exit t)
+(defhydra hydra-helm (global-map "C-c j" :exit t)
   ("a" helm-apropos "apropos")
   ("g" helm-do-grep-ag "grep")
   ("i" helm-imenu "imenu")
