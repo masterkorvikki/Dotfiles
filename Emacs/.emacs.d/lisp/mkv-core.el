@@ -42,12 +42,9 @@
   (substitute-key-definition 'cdlatex-dollar nil cdlatex-mode-map)
   :defer t)
 
-(use-package company
-  :config
-  (setq company-global-modes t)
-  (global-company-mode)
-  :defer nil
-  :diminish company-mode)
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(diminish 'company-mode)
 
 (use-package company-auctex
   :after (company)
@@ -121,6 +118,7 @@
   (setq helm-case-fold-search t)
   (setq helm-man-or-woman-function 'woman)
   (setq helm-split-window-inside-p t)
+  :defer t
   :diminish
   :init
   (helm-mode t))
@@ -178,7 +176,7 @@
   :defer t)
 
 ;; pdf-tools has been installed, I am prepared to fight someone
-(pdf-loader-install)
+;; (pdf-loader-install)
 
 (use-package rainbow-delimiters
   :defer t
@@ -196,15 +194,11 @@
 (use-package shx
   :config (shx-global-mode 1))
 
-(use-package smartparens
-  :bind (( "s-<right>" . sp-forward-slurp-sexp)
-	 ("s-<left>" . sp-forward-barf-sexp))
-  :config
-  (require 'smartparens-config)
-  (require 'smartparens-latex)
-  :diminish smartparens-mode
-  :hook
-  (text-mode . smartparens-mode))
+(require 'smartparens)
+(require 'smartparens-config)
+(require 'smartparens-latex)
+(diminish 'smartparens-mode)
+(add-hook 'text-mode-hook 'smartparens-mode)
 
 (use-package solarized-theme)
 

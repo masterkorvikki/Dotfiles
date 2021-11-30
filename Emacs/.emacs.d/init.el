@@ -34,7 +34,7 @@
 (load-theme 'solarized-dark t)
 (setq custom-safe-themes t)
 
-(setq default-directory "/Users/alicesmith/")
+(setq default-directory "/home/alice/")
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (use-package mkv-core

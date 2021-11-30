@@ -8,10 +8,6 @@ source ~/.bash_aliases
 ## Exports ##
 #############
 
-# Adding colors to grep
-
-export GREP_OPTIONS='-—color=auto'
-
 # Set emacs as my default editor
 if [[ $(uname) == "Darwin" ]]; then
     alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
