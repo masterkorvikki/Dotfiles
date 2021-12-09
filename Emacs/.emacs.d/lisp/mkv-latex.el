@@ -7,10 +7,7 @@
 ;; AUCTeX configuration
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
-(setq TeX-close-quote "")
-(setq TeX-open-quote "")
 (setq reftex-plug-into-AUCTeX t)
-
 
 (setq-default TeX-master nil)
 
@@ -22,12 +19,12 @@
   (setq TeX-view-program-selection
         '((output-dvi "DVI Viewer")
           (output-pdf "PDF Viewer")
-          (output-html "HTML Viewer"))))
+          (output-html "HTML Viewer")))
 
   (setq TeX-view-program-list
         '(("DVI Viewer" "open %o")
           ("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")
-          ("HTML Viewer" "open %o")))
+          ("HTML Viewer" "open %o"))))
 
 (defun mkv-latex-defaults ()
   "My defaults for `LaTeX-Mode'."
@@ -36,7 +33,15 @@
   (turn-on-cdlatex)
   (turn-on-flyspell)
   (turn-on-reftex)
-  (yas-minor-mode-on))
+  (yas-minor-mode-on)
+  (outline-minor-mode +1)
+  (prettify-symbols-mode +1)
+  (xenops-mode))
+
+;; a few outline mode bindings just because they're useful
+
+(setq outline-minor-mode-prefix (kbd "M-o"))
+
 
 (add-hook 'LaTeX-mode-hook 'mkv-latex-defaults)
 

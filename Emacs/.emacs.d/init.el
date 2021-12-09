@@ -37,14 +37,9 @@
 (setq default-directory "/Users/alicesmith/")
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(use-package mkv-core
-  :ensure nil)
-(use-package mkv-programming
-  :ensure nil)
-(use-package mkv-editor
-  :ensure nil)
-(use-package mkv-keybindings
-  :ensure nil)
+(require 'mkv-core)
+(require 'mkv-programming)
+(require 'mkv-editor)
 
 (provide 'init)
 

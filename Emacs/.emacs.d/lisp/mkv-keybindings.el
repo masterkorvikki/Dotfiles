@@ -4,6 +4,8 @@
 
 ;;; Code:
 
+(require 'hydra)
+
 ;; Hydra to unite all the shells
 (defhydra hydra-shell (global-map "C-x m" :exit t)
   ("e" eshell "eshell")

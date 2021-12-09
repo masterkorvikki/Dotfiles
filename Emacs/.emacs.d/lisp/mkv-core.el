@@ -65,6 +65,14 @@
   :hook
   (after-init . global-company-mode))
 
+(use-package deft
+  :ensure t
+  :init
+    (setq deft-extensions '("org" "md" "txt" "tex")
+          deft-use-filename-as-title t
+	  deft-recursive t
+	  deft-directory "/Users/alicesmith/Zettelkasten"))
+
 (use-package diff-hl
   :bind
   (("C-c s" . diff-hl-show-hunk))
@@ -145,13 +153,16 @@
 (use-package hl-todo
   :config (global-hl-todo-mode))
 
-(use-package hydra
-  :defer t)
+(use-package hydra)
 
 (use-package magit
   :bind ("C-x g" . magit-status))
 
 (use-package mkv-elisp
+  :ensure nil)
+
+(use-package mkv-keybindings
+  :after (hydra mkv-core)
   :ensure nil)
 
 (use-package mkv-latex
@@ -228,12 +239,19 @@
   :init
   (which-key-mode))
 
+(use-package xenops)
+
 (use-package yasnippet
   :hook
   (text-mode . yas-minor-mode-on))
 
 (use-package yasnippet-snippets
   :defer t)
+
+(use-package zetteldeft
+  :config
+  (zetteldeft-set-classic-keybindings)
+  (setq zetteldeft-tag-line-prefix "#+TAGS:"))
 
 ;; Clarifying my selected packages while I'm here
 (setq package-selected-packages

@@ -8,14 +8,10 @@ source ~/.bash_aliases
 ## Exports ##
 #############
 
-# Adding colors to grep
-
-export GREP_OPTIONS='-—color=auto'
-
 # Set emacs as my default editor
 if [[ $(uname) == "Darwin" ]]; then
     alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
-    alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -a /Applications/Emacs.app/Contents/MacOS/Emacs $@ "
+    alias emacsclient="/usr/local/Cellar/emacs-plus@28/28.0.50/bin/emacsclient -ca /Applications/Emacs.app/Contents/MacOS/Emacs"
     alias daemon="/Applications/Emacs.app/Contents/MacOS/Emacs --daemon"
     export EDITOR="/Applications/Emacs.app/Contents/MacOS/Emacs"
 else
@@ -208,7 +204,7 @@ _color_my_directories() {
 	dcolor="\[\033[38;5;196m\]$(basename "$(pwd)")\[\033[0m\]"
     elif [[ $(pwd) =~ 'Philosophy' ]]; then
 	dcolor="\[\033[38;5;20m\]$(basename "$(pwd)")\[\033[0m\]"
-    elif [[ $(pwd) =~ '.dotfiles' ]]; then
+    elif [[ $(pwd) =~ 'otfiles' ]]; then
 	dcolor="\[\e[35m\]$(basename "$(pwd)")\[\033[0m\]" 
     elif [[ $(pwd) = $HOME ]]; then
  	dcolor="\[\e[1;36m\]~\[\e[m\]"
