@@ -182,7 +182,8 @@
   :defer t)
 
 ;; pdf-tools has been installed, I am prepared to fight someone
-(pdf-loader-install)
+(if (eq system-type 'darwin)
+    (pdf-loader-install))
 
 (use-package rainbow-delimiters
   :defer t
