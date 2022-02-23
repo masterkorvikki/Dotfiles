@@ -6,9 +6,10 @@
 
 ;; Setting up my agenda
 
-(setq
- org-agenda-files '("~/gtd"))
+(setq org-agenda-files '("~/gtd"))
+(setq org-agenda-start-on-weekday 0)
 (setq org-agenda-include-diary t)
+(setq diary-file "~/gtd/diary.org")
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file+headline "~/gtd/inbox.org" "Tasks")
                "** TODO %? %^G" :clock-resume t)
@@ -78,7 +79,9 @@
 
 ;; Allow refiling where I want it
 
-(setq org-refile-targets '((org-agenda-files :level . 1)))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 4)))
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
 
 ;; Customizing the process by which org-mode exports pdfs
 

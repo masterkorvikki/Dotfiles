@@ -10,18 +10,8 @@
 	       (setq gc-cons-threshold 800000)
                (let ((garbage-collection-messages t)) (garbage-collect))))
 
-;;; temporarily disable the file name handler.
-(setq default-file-name-handler-alist file-name-handler-alist)
-(setq file-name-handler-alist nil)
-(defun mkv-reset-file-name-handler-alist ()
-  (setq file-name-handler-alist
-        (append default-file-name-handler-alist
-                file-name-handler-alist))
-  (cl-delete-duplicates file-name-handler-alist :test 'equal))
-(add-hook 'after-init-hook 'mkv-reset-file-name-handler-alist)
-
 ;;; set location for customization
-(setq custom-file "~/.emacs.d/.emacs-custom.el")
+(setq custom-file "~/.emacs.d/config/.emacs-custom.el")
 (load custom-file)
 
 ;;; enable y/n answers
@@ -33,7 +23,6 @@
 ;;; package manager initialization
 (require 'package)
 (setq package-user-dir (concat user-emacs-directory "elpa"))
-(setq package-enable-at-startup nil)
 
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))

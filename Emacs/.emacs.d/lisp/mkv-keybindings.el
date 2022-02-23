@@ -10,7 +10,7 @@
 (defhydra hydra-shell (global-map "C-x m" :exit t)
   ("e" eshell "eshell")
   ("E" (lambda () (interactive) (eshell t)) "new eshell")
-  ("s" shell "default shell"))
+  ("s" vterm "default shell"))
 
 ;; Hydra to navigate errors
 (defhydra hydra-error (global-map "M-#")
@@ -91,7 +91,7 @@ _J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
 (define-key helm-map (kbd "C-o") 'helm-like-unite/body)
 
 ;; Adding some of the more obscure helm stuff to a hydra
-(defhydra hydra-helm (global-map "C-c j" :exit t)
+(defhydra hydra-helm (:exit t)
   ("a" helm-apropos "apropos")
   ("g" helm-do-grep-ag "grep")
   ("i" helm-imenu "imenu")
@@ -99,6 +99,8 @@ _J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
   ("m" helm-man-woman "man page")
   ("r" helm-recentf "recent files")
   ("t" helm-top "top"))
+
+(global-set-key (kbd "C-c j") 'hydra-helm/body)
 
 ;; A complementary binding to the apropos-command (C-h a)
 (define-key 'help-command "A" 'apropos)
@@ -115,15 +117,18 @@ _J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
                                         (indent-according-to-mode)))
 
 ;; Make ibuffer a thing I use
-(global-set-key (kbd "C-x M-b") 'ibuffer)
+(global-set-key (kbd "C-x M-b") 'list-buffers)
+(global-set-key (kbd "C-x b") 'ibuffer)
 
 ;; Text completion/correction hydra
-(defhydra hydra-textc (global-map "C-c t" :exit t)
+(defhydra hydra-textc (:exit t)
   ("n" flyspell-goto-next-error "next error")
   ("s" ispell-word "spellcheck")
   ("c" helm-company "company")
   ("e" hippie-expand "expand" :exit nil)
   ("q" nil))
+
+(global-set-key (kbd "C-c t") 'hydra-textc/body)
 
 ;; Also give me a shortcut for the most common ones
 

@@ -128,7 +128,6 @@
   (setq history-delete-duplicates t)
   (setq helm-candidate-number-limit 100)
   (setq helm-case-fold-search t)
-  (setq helm-man-or-woman-function 'woman)
   (setq helm-split-window-inside-p t)
   (helm-mode t)
   :diminish)
@@ -150,10 +149,20 @@
 (use-package helm-descbinds
   :config (helm-descbinds-mode))
 
-(use-package hl-todo
-  :config (global-hl-todo-mode))
-
 (use-package hydra)
+
+(use-package lsp-mode
+  :commands lsp
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 
 (use-package magit
   :bind ("C-x g" . magit-status))
@@ -181,10 +190,6 @@
   :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   :defer t)
 
-;; pdf-tools has been installed, I am prepared to fight someone
-(if (eq system-type 'darwin)
-    (pdf-loader-install))
-
 (use-package rainbow-delimiters
   :defer t
   :hook
@@ -196,6 +201,19 @@
   :init
   (progn
     (add-hook 'prog-mode-hook 'rainbow-mode)))
+
+(use-package rustic
+  :bind (:map rustic-mode-map
+	      ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  (setq rustic-format-on-save t))
 
 (use-package shx
   :config (shx-global-mode 1))
@@ -233,6 +251,8 @@
   :config (global-undo-tree-mode)
   :defer t
   :diminish)
+
+(use-package vterm)
 
 (use-package which-key
   :defer t

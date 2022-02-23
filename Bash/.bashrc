@@ -203,7 +203,7 @@ _color_my_directories() {
 		$(pwd) =~ 'Communis' ]] ; then
 	dcolor="\[\033[38;5;196m\]$(basename "$(pwd)")\[\033[0m\]"
     elif [[ $(pwd) =~ 'Philosophy' ]]; then
-	dcolor="\[\033[38;5;20m\]$(basename "$(pwd)")\[\033[0m\]"
+	dcolor="\[\033[38;5;129m\]$(basename "$(pwd)")\[\033[0m\]"
     elif [[ $(pwd) =~ 'otfiles' ]]; then
 	dcolor="\[\e[35m\]$(basename "$(pwd)")\[\033[0m\]" 
     elif [[ $(pwd) = $HOME ]]; then
@@ -234,3 +234,4 @@ _build_prompt() {
 PROMPT_COMMAND="_show_last_exit_status; _build_prompt;"
 
 PS2='> '
+. "$HOME/.cargo/env"

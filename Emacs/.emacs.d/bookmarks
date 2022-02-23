@@ -1,4 +1,4 @@
-;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
@@ -9,17 +9,17 @@
  (position . 1883))
 ("org-capture-last-stored-marker"
  (filename . "~/gtd/gtd.org")
- (front-context-string . "** TODO Get Beor")
- (rear-context-string . "2021-08-24 Tue>\n")
- (position . 20634))
+ (front-context-string . "** TODO Latin Ho")
+ (rear-context-string . "ng Appointment\n\n")
+ (position . 14422))
 ("org-refile-last-stored"
  (filename . "~/gtd/gtd.org")
- (front-context-string . "** TODO Create a")
- (rear-context-string . "ssful:Adulting:\n")
- (position . 24756))
+ (front-context-string . "**** TODO Take n")
+ (rear-context-string . "022-01-21 Fri>\n\n")
+ (position . 1634))
 ("org-capture-last-stored"
  (filename . "~/gtd/inbox.org")
- (front-context-string . "** TODO         ")
- (rear-context-string)
- (position . 9))
+ (front-context-string . "** TODO Get org-")
+ (rear-context-string . " Math Homework \n")
+ (position . 83))
 )

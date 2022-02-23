@@ -57,6 +57,17 @@
 ;;; window movement with shift and arrowkeys
 (windmove-default-keybindings)
 
+;; using wikitionary from emacs
+(autoload 'ispell-get-word "ispell")
+
+(defun lookup-word (word)
+  (interactive
+   (list (save-excursion (car (ispell-get-word nil)))))
+  (split-window)
+  (eww (format "http://en.wiktionary.org/wiki/%s" word)))
+
+(global-set-key (kbd "C-c w") 'lookup-word)
+
 (provide 'mkv-editor)
 
 ;;; mkv-editor.el ends here

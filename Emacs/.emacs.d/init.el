@@ -19,6 +19,7 @@
 (global-linum-mode 1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(unless (eq system-type 'darwin) (menu-bar-mode -1))
 
 (winner-mode +1)
 (setq frame-title-format " %b ")
@@ -39,6 +40,7 @@
   (setq default-directory "/home/alice/"))
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+
 (require 'mkv-core)
 (require 'mkv-programming)
 (require 'mkv-editor)

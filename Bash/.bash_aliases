@@ -64,7 +64,3 @@ alias sth='git stash'
 alias lg='git log'
 alias u='git add -u'
 alias all='git add .'
-
-# Please don't ask
-
-alias album='sed "$(echo $((1 + $RANDOM % $(cat ~/Documents/org-mode-projects/Albums.org | wc -l))))q;d" ~/Documents/org-mode-projects/Albums.org'
