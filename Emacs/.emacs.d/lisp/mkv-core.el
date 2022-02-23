@@ -167,6 +167,9 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+(use-package mkv-editor
+  :ensure nil)
+
 (use-package mkv-elisp
   :ensure nil)
 
@@ -181,6 +184,9 @@
   :ensure nil)
 
 (use-package mkv-pdf
+  :ensure nil)
+
+(use-package mkv-programming
   :ensure nil)
 
 (use-package mkv-shell
