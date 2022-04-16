@@ -3,6 +3,47 @@
 
 ;;; Code:
 
+
+;;; gc management
+(setq gc-cons-threshold 80000000000000)
+(add-to-list 'after-init-hook
+	     (lambda ()
+	       (setq gc-cons-threshold 800000)
+               (let ((garbage-collection-messages t)) (garbage-collect))))
+
+;;; set location for customization
+(setq custom-file "~/.emacs.d/lisp/.emacs-custom.elc")
+(load custom-file)
+
+;;; enable y/n answers
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;;; load only my things
+(setq inhibit-default-init t)
+
+;;; package manager initialization
+(require 'package)
+(setq package-user-dir (concat user-emacs-directory "elpa"))
+(package-initialize)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+;;; make sure use-package is installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+
+(eval-when-compile
+  (add-to-list 'load-path "~/.emacs.d/elpa")
+  (require 'use-package))
+
+;;; getting use-package to be able to bind keys in compiled code
+(require 'bind-key)
+
+;;; making sure my path works
+(use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 ;;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
@@ -19,8 +60,6 @@
 (global-linum-mode 1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(unless (eq system-type 'darwin) (menu-bar-mode -1))
-
 (winner-mode +1)
 (setq frame-title-format " %b ")
 (setq inhibit-startup-message t)
@@ -31,7 +70,6 @@
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
-
 (load-theme 'solarized-dark t)
 (setq custom-safe-themes t)
 
@@ -42,8 +80,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (require 'mkv-core)
-(require 'mkv-programming)
-(require 'mkv-editor)
 
 (provide 'init)
 

@@ -6,21 +6,6 @@
 
 (require 'hydra)
 
-;; Hydra to unite all the shells
-(defhydra hydra-shell (global-map "C-x m" :exit t)
-  ("e" eshell "eshell")
-  ("E" (lambda () (interactive) (eshell t)) "new eshell")
-  ("s" vterm "default shell"))
-
-;; Hydra to navigate errors
-(defhydra hydra-error (global-map "M-#")
-  "goto-error"
-  ("h" first-error "first")
-  ("j" next-error "next")
-  ("k" previous-error "prev")
-  ("v" recenter-top-bottom "recenter")
-  ("q" nil "quit"))
-
 ;; Catch-all hydra
 (defhydra hydra-mkv (:exit t :idle 0.8)
   ("a" org-agenda "agenda")
@@ -49,47 +34,6 @@
 
 (global-set-key (kbd "C-;") 'hydra-avy/body)
 
-;; Making helm a little easier to use with a hydra
-(defhydra helm-like-unite (:hint nil :color pink)
-  "
-Nav ^^^^^^^^^        Mark ^^          Other ^^       Quit
-^^^^^^^^^^------------^^----------------^^----------------------
-_K_ ^ ^ _k_ ^ ^     _m_ark           _v_iew         _i_: cancel
-^↕^ _h_ ^✜^ _l_     _t_oggle mark    _H_elp         _q_: quit
-_J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
-^^^^^^^^^^ 
-"
-  ;; arrows
-  ("h" helm-beginning-of-buffer)
-  ("j" helm-next-line)
-  ("k" helm-previous-line)
-  ("l" helm-end-of-buffer)
-  ;; beginning/end
-  ("g" helm-beginning-of-buffer)
-  ("G" helm-end-of-buffer)
-  ;; scroll
-  ("K" helm-scroll-other-window-down)
-  ("J" helm-scroll-other-window)
-  ;; mark
-  ("m" helm-toggle-visible-mark)
-  ("t" helm-toggle-all-marks)
-  ("U" helm-unmark-all)
-  ;; exit
-  ("<escape>" keyboard-escape-quit "" :exit t)
-  ("o" keyboard-escape-quit :exit t)
-  ("i" nil)
-  ;; sources
-  ("}" helm-next-source)
-  ("{" helm-previous-source)
-  ;; rest
-  ("H" helm-help)
-  ("v" helm-execute-persistent-action)
-  ("f" helm-follow-mode)
-  ("q" hydra-keyboard-quit
-   :exit t))
-
-(define-key helm-map (kbd "C-o") 'helm-like-unite/body)
-
 ;; Adding some of the more obscure helm stuff to a hydra
 (defhydra hydra-helm (:exit t)
   ("a" helm-apropos "apropos")
@@ -105,35 +49,11 @@ _J_ ^ ^ _j_ ^ ^     _U_nmark all     _f_ollow: %(helm-attr 'follow)
 ;; A complementary binding to the apropos-command (C-h a)
 (define-key 'help-command "A" 'apropos)
 
-(define-key 'help-command (kbd "C-f") 'find-function)
-(define-key 'help-command (kbd "C-k") 'find-function-on-key)
-(define-key 'help-command (kbd "C-v") 'find-variable)
-
-
 ;; kill lines backwards with a useful keybinding
 (global-set-key (kbd "C-<backspace>") (lambda ()
                                         (interactive)
                                         (kill-line 0)
                                         (indent-according-to-mode)))
-
-;; Make ibuffer a thing I use
-(global-set-key (kbd "C-x M-b") 'list-buffers)
-(global-set-key (kbd "C-x b") 'ibuffer)
-
-;; Text completion/correction hydra
-(defhydra hydra-textc (:exit t)
-  ("n" flyspell-goto-next-error "next error")
-  ("s" ispell-word "spellcheck")
-  ("c" helm-company "company")
-  ("e" hippie-expand "expand" :exit nil)
-  ("q" nil))
-
-(global-set-key (kbd "C-c t") 'hydra-textc/body)
-
-;; Also give me a shortcut for the most common ones
-
-(global-set-key (kbd "C-=") 'ispell-word)
-(global-set-key (kbd "M-=") 'hippie-expand)
 
 ;; making things work like MacOS
 (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)

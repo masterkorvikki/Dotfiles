@@ -31,6 +31,7 @@
 	  (?b aw-split-window-horz "Split Horz Window")
 	  (?o delete-other-windows "Delete Other Windows")
 	  (?? aw-show-dispatch-help)))
+  :defer t
   :diminish)
 
 (use-package anzu
@@ -42,6 +43,7 @@
   (setq query-replace-highlight t)
   (setq search-highlight t)
   (setq anzu-cons-mode-line-p nil)
+  :defer t
   :hook
   (after-init . global-anzu-mode))
 
@@ -57,25 +59,28 @@
   :defer t)
 
 (use-package company
+  :bind (("C-," . company-complete))
   :config
   (setq company-global-modes t)
-  (setq company-idle-delay 0.3)
+  (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 3)
+  :defer t
   :diminish company-mode
   :hook
   (after-init . global-company-mode))
 
 (use-package deft
-  :ensure t
-  :init
-    (setq deft-extensions '("org" "md" "txt" "tex")
-          deft-use-filename-as-title t
-	  deft-recursive t
-	  deft-directory "/Users/alicesmith/Zettelkasten"))
+  :config  (setq deft-extensions '("org" "md" "txt" "tex")
+		 deft-use-filename-as-title t
+		 deft-recursive t
+		 deft-directory "/Users/alicesmith/Zettelkasten")
+  :defer t
+  :ensure t)
 
 (use-package diff-hl
   :bind
   (("C-c s" . diff-hl-show-hunk))
+  :defer t
   :hook
   ((dired-mode . diff-hl-dired-mode)
    (after-init . global-diff-hl-mode)))
@@ -86,7 +91,9 @@
   :ensure nil)
 
 (use-package flycheck
-  :config (global-flycheck-mode))
+  :hook
+  (prog-mode . flycheck-mode)
+  (after-init . global-flycheck-mode))
 
 (use-package flyspell
   :defer t
@@ -95,7 +102,8 @@
   (define-key flyspell-mode-map (kbd "C-;") nil)
   (define-key flyspell-mode-map (kbd "C-,") nil)
   (setq ispell-program-name "aspell"
-	ispell-extra-args '("--sug-mode=ultra")))
+	ispell-extra-args '("--sug-mode=ultra"))
+  :hook (prog-mode . flyspell-prog-mode))
 
 (use-package helm
   :bind (;; helm alternatives to standard commands
@@ -110,62 +118,62 @@
 
 	 ;; project based keybindings
 	 ("M-p" . helm-browse-project)
-         ("C-x r h" . helm-register)
-	 
+         
 	 ;; helm internal commands
 	 (:map helm-map
 	       ("TAB" . helm-execute-persistent-action)
-	       ("C-j" . helm-select-action))
-
-	 (:map minibuffer-local-map
-	       ("C-c C-l" . helm-minibuffer-history))
-
-	 (:map isearch-mode-map
-	       ("C-o" . helm-occur-from-isearch)))
+	       ("C-j" . helm-select-action)))
   :config
-  (helm-autoresize-mode 1)
+  (setq helm-autoresize-mode 1)
   (setq history-length 100)
   (setq history-delete-duplicates t)
   (setq helm-candidate-number-limit 100)
-  (setq helm-case-fold-search t)
-  (setq helm-split-window-inside-p t)
   (helm-mode t)
   :diminish)
 
-(use-package helm-company
-  :after (helm company)
-  :commands (helm-company)
-  :init
-  (define-key company-mode-map (kbd "C-,") 'helm-company)
-  (define-key company-active-map (kbd "C-,") 'helm-company))
-
 (use-package helm-config
   :bind ("C-c h" . helm-command-prefix)
-  :ensure nil)
-
-(use-package helm-grep
+  :defer t
   :ensure nil)
 
 (use-package helm-descbinds
-  :config (helm-descbinds-mode))
+  :config (helm-descbinds-mode)
+  :defer t)
+
+(use-package helm-grep
+  :defer t
+  :ensure nil)
+
+(use-package helm-lsp
+  :commands helm-lsp-workspace-symbol
+  :defer t)
 
 (use-package hydra)
 
 (use-package lsp-mode
-  :commands lsp
+  :commands (lsp lsp-deferred)
   :custom
   (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (setq lsp-tex-server 'digestif)
+  :defer t
+  :hook
+  (lsp-modep . lsp-enable-which-key-integration))
 
 (use-package lsp-ui
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :defer t)
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
+  :defer t)
+
+(use-package mkv-editor
+  :ensure nil)
 
 (use-package mkv-elisp
   :ensure nil)
@@ -174,21 +182,8 @@
   :after (hydra mkv-core)
   :ensure nil)
 
-(use-package mkv-latex
-  :ensure nil)
-
 (use-package mkv-org-mode
   :ensure nil)
-
-(use-package mkv-pdf
-  :ensure nil)
-
-(use-package mkv-shell
-  :ensure nil)
-
-(use-package nov
-  :config (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  :defer t)
 
 (use-package rainbow-delimiters
   :defer t
@@ -198,9 +193,8 @@
 (use-package rainbow-mode
   :defer t
   :diminish
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'rainbow-mode)))
+  :hook
+  (prog-mode . rainbow-mode))
 
 (use-package rustic
   :bind (:map rustic-mode-map
@@ -215,9 +209,6 @@
   :config
   (setq rustic-format-on-save t))
 
-(use-package shx
-  :config (shx-global-mode 1))
-
 (use-package smartparens
   :bind (("C-S-f" . sp-forward-slurp-sexp)
 	 ("C-S-b" . sp-forward-barf-sexp))
@@ -225,7 +216,8 @@
   (require 'smartparens-config)
   :diminish smartparens-mode
   :hook
-  (text-mode . smartparens-mode))
+  (text-mode . smartparens-mode)
+  (prog-mode . smartparens-strict-mode))
 
 (use-package solarized-theme)
 
@@ -240,19 +232,10 @@
   :defer t
   :diminish)
 
-(use-package tex
-  :config
-  (setq TeX-source-correlate-method 'synctex)
-  (TeX-source-correlate-mode)
-  (setq TeX-source-correlate-start-server t)
-  :ensure auctex)
-
 (use-package undo-tree
   :config (global-undo-tree-mode)
   :defer t
   :diminish)
-
-(use-package vterm)
 
 (use-package which-key
   :defer t
@@ -260,9 +243,8 @@
   :init
   (which-key-mode))
 
-(use-package xenops)
-
 (use-package yasnippet
+  :defer t
   :hook
   (text-mode . yas-minor-mode-on))
 
@@ -272,7 +254,8 @@
 (use-package zetteldeft
   :config
   (zetteldeft-set-classic-keybindings)
-  (setq zetteldeft-tag-line-prefix "#+TAGS:"))
+  (setq zetteldeft-tag-line-prefix "#+TAGS:")
+  :defer t)
 
 ;; Clarifying my selected packages while I'm here
 (setq package-selected-packages
@@ -282,8 +265,7 @@
 	super-save
 	rainbow-mode
 	rainbow-delimiters
-	shx
-	spaceline
+        spaceline
 	magit
         helm-company
 	discover-my-major
