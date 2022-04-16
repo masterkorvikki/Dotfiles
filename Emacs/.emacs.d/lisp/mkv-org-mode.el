@@ -98,7 +98,10 @@
 ;; Adding scheme to supported languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((scheme . t)))
+ '((scheme . t)
+   (lisp . t)
+   (python . t)
+   (C . t)))
 
 
 (provide 'mkv-org-mode)

@@ -12,7 +12,7 @@
                (let ((garbage-collection-messages t)) (garbage-collect))))
 
 ;;; set location for customization
-(setq custom-file "~/.emacs.d/config/.emacs-custom.el")
+(setq custom-file "~/.emacs.d/lisp/.emacs-custom.elc")
 (load custom-file)
 
 ;;; enable y/n answers
@@ -26,7 +26,6 @@
 (setq package-user-dir (concat user-emacs-directory "elpa"))
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 ;;; make sure use-package is installed
 (unless (package-installed-p 'use-package)
